@@ -1,0 +1,10 @@
+author: Felipe Echanique Torres
+description: 'This action allows to use Salesforce DX CLI from GitHub Actions'
+inputs:
+  sfdx-auth-url:
+    description: Authorize a Salesforce org using an SFDX auth URL
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
