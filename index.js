@@ -1,6 +1,5 @@
 const core = require('@actions/core')
-const tc = require('@actions/tool-cache');
-const exec = require('@actions/exec');
+const exec = require('child_process').exec
 const fs = require('fs')
 
 try {
@@ -9,23 +8,27 @@ try {
   core.setFailed(error.message)
 }
 
-async function installSFDX(){
-  if (process.platform === 'linux') {
-    const file = await tc.downloadTool('https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz')
-    const extr = await tc.extractTar(file, './sfdx')
-	const inst = await exec.exec('sudo '+extr)
-  }
-  else {
-    throw ('Only Linux system supported')
-  }
-  createAuthFile()
+function installSFDX(){
+  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz'
+  var createDir = 'mkdir sfdx'
+  var unzip = 'tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1'
+  var install = './sfdx/install'
+  exec(download+' && '+createDir+' && '+unzip+' && '+install, function(error, stdout, stderr){
+    if(error) throw(stderr)
+	console.log(stdout)
+    createAuthFile()
+  })
 }
 
-function createAuthFile() {
+function createAuthFile(){
   fs.writeFileSync('./sfdx_auth.txt', core.getInput('sfdx-auth-url'))
   authSFDX()
 }
 
-async function authSFDX() {
-  const resp = await exec.exec('sfdx force:auth:sfdxurl:store -f ./sfdx_auth.txt --setdefaultusername -a SFDX-ENV');
+function authSFDX(){
+  exec('sfdx force:auth:sfdxurl:store -f ./sfdx_auth.txt --setdefaultusername -a SFDX-ENV', function(error, stdout, stderr){
+    if(error) throw(stderr)
+	console.log(stdout)
+  })
 }
+
