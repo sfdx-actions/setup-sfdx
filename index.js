@@ -15,7 +15,7 @@ function installSFDX(){
   var install = './sfdx/install'
   exec(download+' && '+createDir+' && '+unzip+' && '+install, function(error, stdout, stderr){
     if(error) throw(stderr)
-    console.log(stdout)
+    core.debug(stdout)
     if(core.getInput('sfdx-auth-url')) createAuthFile()
   })
 }
@@ -29,7 +29,7 @@ function authSFDX(){
   var params = '--setdefaultdevhubusername --setdefaultusername -a SFDX-ENV'
   exec('sfdx force:auth:sfdxurl:store -f ./sfdx_auth.txt '+params, function(error, stdout, stderr){
     if(error) throw(stderr)
-	console.log(stdout)
+	core.debug(stdout)
   })
 }
 
