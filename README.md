@@ -1,12 +1,12 @@
-# Salesforce DX CLI action
+# Salesforce SFDX CLI action
 
-This action allows to use the Salesforce DX CLI from GitHub Actions
+This action allows to use the Salesforce SFDX CLI from GitHub Actions
 
 ## Inputs
 
 ### `sfdx-auth-url`
 
-**Required** Authorize a Salesforce org using an SFDX auth URL
+**Optional** Authorize a Salesforce org using an SFDX auth URL
 
 The secret must have the format `force://<refreshToken>@<instanceUrl>` or `force://<clientId>:<clientSecret>:<refreshToken>@<instanceUrl>`
 
