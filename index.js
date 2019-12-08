@@ -16,7 +16,7 @@ function installSFDX(){
   exec(download+' && '+createDir+' && '+unzip+' && '+install, function(error, stdout, stderr){
     if(error) throw(stderr)
     console.log(stdout)
-    createAuthFile()
+    if(core.getInput('sfdx-auth-url')) createAuthFile()
   })
 }
 
