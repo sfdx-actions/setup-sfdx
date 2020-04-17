@@ -22,13 +22,13 @@ function installSFDX(){
 }
 
 function createAuthFile(){
-  fs.writeFileSync('tmp/sfdx/sfdx_auth.txt', core.getInput('sfdx-auth-url'))
+  fs.writeFileSync('tmp/sfdx_auth.txt', core.getInput('sfdx-auth-url'))
   authSFDX()
 }
 
 function authSFDX(){
   var params = '--setdefaultdevhubusername --setdefaultusername -a SFDX-ENV'
-  exec('sfdx force:auth:sfdxurl:store -f tmp/sfdx/sfdx_auth.txt '+params, function(error, stdout, stderr){
+  exec('sfdx force:auth:sfdxurl:store -f tmp/sfdx_auth.txt '+params, function(error, stdout, stderr){
     if(error) throw(stderr)
 	core.debug(stdout)
   })
