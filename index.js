@@ -9,10 +9,10 @@ try {
 }
 
 function installSFDX(){
-  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz'
-  var createDir = 'mkdir sfdx'
-  var unzip = 'tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1'
-  var install = './sfdx/install'
+  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz -P /tmp'
+  var createDir = 'mkdir /tmp/sfdx'
+  var unzip = 'tar xJf sfdx-linux-amd64.tar.xz -C /tmp/sfdx --strip-components 1'
+  var install = 'tmp/sfdx/install'
   exec(download+' && '+createDir+' && '+unzip+' && '+install, function(error, stdout, stderr){
     if(error) throw(stderr)
     core.debug(stdout)
@@ -21,13 +21,13 @@ function installSFDX(){
 }
 
 function createAuthFile(){
-  fs.writeFileSync('./sfdx_auth.txt', core.getInput('sfdx-auth-url'))
+  fs.writeFileSync('tmp/sfdx/sfdx_auth.txt', core.getInput('sfdx-auth-url'))
   authSFDX()
 }
 
 function authSFDX(){
   var params = '--setdefaultdevhubusername --setdefaultusername -a SFDX-ENV'
-  exec('sfdx force:auth:sfdxurl:store -f ./sfdx_auth.txt '+params, function(error, stdout, stderr){
+  exec('sfdx force:auth:sfdxurl:store -f tmp/sfdx/sfdx_auth.txt '+params, function(error, stdout, stderr){
     if(error) throw(stderr)
 	core.debug(stdout)
   })
