@@ -5,6 +5,9 @@ inputs:
   sfdx-auth-url:
     description: Authorize a Salesforce org using an SFDX auth URL
     required: false
+  tarball-url:
+    description: Supply a URL to a XZip'd tarball containing the version of the SFDX CLI to install. If omitted or blank, it will install the "latest" CLI
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'
