@@ -9,14 +9,23 @@ try {
 }
 
 function installSFDX(){
-  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz -P /tmp'
+  var tarballBase = 'https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable'
+  var tarballFile = 'sfdx-linux-x64.tar.xz'
+
+  var tarballOverride = core.getInput('tarball-url')
+  if(tarballOverride ){
+    tarballBase = tarballOverride.substr(0,tarballOverride.lastIndexOf('/'))
+    tarballFile = tarballOverride.substr(tarballOverride.lastIndexOf('/')+1)
+  }
+
+  var download = 'wget ' + tarballBase + '/' + tarballFile + ' -q -P /tmp'
   var createDir = 'mkdir sfdx'
-  var unzip = 'tar xJf /tmp/sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1'
-  var install = './sfdx/install'
-  var clean = 'rm -r ./sfdx'
-  exec(download+' && '+createDir+' && '+unzip+' && '+install+' && '+clean, function(error, stdout, stderr){
+  var unzip = 'tar xJf /tmp/' + tarballFile + ' -C sfdx --strip-components 1'
+  var install = 'echo "`pwd`/sfdx/bin" >> $GITHUB_PATH'
+  var version = 'sfdx/bin/sfdx --version && sfdx/bin/sfdx plugins --core'
+  exec(download+' && '+createDir+' && '+unzip+' && '+install+' && '+version, function(error, stdout, stderr){
     if(error) throw(stderr)
-    core.debug(stdout)
+    core.info(stdout)
     if(core.getInput('sfdx-auth-url')) createAuthFile()
   })
 }
@@ -28,9 +37,9 @@ function createAuthFile(){
 
 function authSFDX(){
   var params = '--setdefaultdevhubusername --setdefaultusername -a SFDX-ENV'
-  exec('sfdx auth:sfdxurl:store -f /tmp/sfdx_auth.txt '+params, function(error, stdout, stderr){
+  exec('sfdx/bin/sfdx auth:sfdxurl:store -f /tmp/sfdx_auth.txt '+params, function(error, stdout, stderr){
     if(error) throw(stderr)
-	core.debug(stdout)
+	core.info(stdout)
   })
 }
 
