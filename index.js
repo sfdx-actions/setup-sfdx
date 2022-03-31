@@ -13,8 +13,7 @@ function installSFDX(){
   var createDir = 'mkdir ~/sfdx'
   var unzip = 'tar xJf /tmp/sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1'
   var install = 'export PATH=~/sfdx/bin:$PATH'
-  var version = 'sfdx --version && sfdx plugins --core'
-  exec(download+' && '+createDir+' && '+unzip+' && '+install+' && '+version, function(error, stdout, stderr){
+  exec(download+' && '+createDir+' && '+unzip+' && '+install, function(error, stdout, stderr){
     if(error) throw(stderr)
     core.info(stdout)
     if(core.getInput('sfdx-auth-url')) createAuthFile()
