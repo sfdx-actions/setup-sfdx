@@ -9,7 +9,7 @@ try {
 }
 
 function installSFDX(){
-  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz -P /tmp'
+  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz -P /tmp'
   var createDir = 'mkdir sfdx'
   var unzip = 'tar xJf /tmp/sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1'
   var install = './sfdx/install'
