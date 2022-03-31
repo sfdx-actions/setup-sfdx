@@ -9,14 +9,14 @@ try {
 }
 
 function installSFDX(){
-  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz -P /tmp'
+  var download = 'wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz -P /tmp'
   var createDir = 'mkdir sfdx'
-  var unzip = 'tar xJf /tmp/sfdx-linux-x64.tar.xz -C sfdx --strip-components 1'
+  var unzip = 'tar xJf /tmp/sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1'
   var install = './sfdx/install'
   var clean = 'rm -r ./sfdx'
   exec(download+' && '+createDir+' && '+unzip+' && '+install+' && '+clean, function(error, stdout, stderr){
     if(error) throw(stderr)
-    core.info(stdout)
+    core.debug(stdout)
     if(core.getInput('sfdx-auth-url')) createAuthFile()
   })
 }
@@ -30,7 +30,7 @@ function authSFDX(){
   var params = '--setdefaultdevhubusername --setdefaultusername -a SFDX-ENV'
   exec('sfdx auth:sfdxurl:store -f /tmp/sfdx_auth.txt '+params, function(error, stdout, stderr){
     if(error) throw(stderr)
-	core.info(stdout)
+	core.debug(stdout)
   })
 }
 
