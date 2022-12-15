@@ -6,7 +6,7 @@ inputs:
     description: Authorize a Salesforce org using an SFDX auth URL
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'index.js'
 branding:
   icon: 'terminal'  
